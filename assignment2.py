@@ -38,7 +38,15 @@ class Assignment2:
         Get the total number of variants
         :return: total number of variants
         '''
-        print("TODO")
+        counter = 0
+        with open("chr22.vcf") as my_vcf_fh:
+            vcf_reader = vcf.Reader(my_vcf_fh) 
+        
+            for record in vcf_reader:
+                call = record.genotype('HG001')
+                if call.is_variant:
+                    counter += 1
+        print("nr of variants: ", counter)
     
     
     def get_variant_caller_of_vcf(self):
@@ -60,6 +68,7 @@ class Assignment2:
             vcf_reader = vcf.Reader(my_vcf_fh)
             print(vcf_reader.metadata)
         # gibt eigentlich die möglichkeit metadaten["fileDate"], aber referenz gibts nicht als keyword
+        # grep: gibt weder ein "genome" noch "reference" in dem file
         
         
     def get_number_of_indels(self):
@@ -102,12 +111,15 @@ class Assignment2:
         Return the number of heterozygous variants
         :return: 
         '''
+        counter = 0
         with open("chr22.vcf") as my_vcf_fh:
             vcf_reader = vcf.Reader(my_vcf_fh)
-            record = next(vcf_reader)
-            print("Number of heterozygote variants: ", record.num_het) 
+            for record in vcf_reader:
+                counter += record.num_het        
+        
+        print("Number of heterozygote variants: ", counter) 
             
-        # num_het nimmt eig number of heterozygous genotypes. ist das das selbe wie HZ variants?        
+        # num_het nimmt "number of heterozygous genotypes". sollte passen      
         
         
     
@@ -116,9 +128,30 @@ class Assignment2:
         Creates one VCF containing all variants of chr21 and chr22
         :return:
         '''
-        print("TODO")
+        with open("chr22.vcf") as my_vcf_fh:
+            vcf_reader = vcf.Reader(my_vcf_fh) 
+            vcf_writer = vcf.Writer(open("outputfile.vcf", "a+"), vcf_reader)
+
+            for record in vcf_reader:
+                call = record.genotype('HG001')
+                if call.is_variant:
+                    vcf_writer.write_record(record)
+        '''
+        with open("chr21.vcf") as my_vcf_fh:
+            vcf_reader = vcf.Reader(my_vcf_fh) 
+            vcf_writer = vcf.Writer(open("outputfile.vcf", "a+"), vcf_reader)
+
+            for record in vcf_reader:
+                call = record.genotype('HG001')
+                if call.is_variant:
+                    vcf_writer.write_record(record) ''' # das geht nicht weil wir keinen sample namen für chr21 haben
+
+
+        #print("TODO")
         
-        print("Number of total variants")
+        #print("Number of total variants")
+
+        # gibt KEIN 0|0 zuück, müsste also passen
         
     
     def print_summary(self):
@@ -130,10 +163,12 @@ def main():
     assignment2 = Assignment2()
     assignment2.print_summary()
     # assignment2.get_human_reference_version() # gibt keine referenzangabe in den metadaten
-    assignment2.get_number_of_indels() # 6586
-    assignment2.get_number_of_snvs() # 35 604
-    assignment2.get_number_of_heterozygous_variants() # 0
-    assignment2.get_average_quality_of_file() # 625
+    #assignment2.get_number_of_indels() # 6586
+    #assignment2.get_number_of_snvs() # 35 604
+    #assignment2.get_number_of_heterozygous_variants() # 29.293
+    #assignment2.get_average_quality_of_file() # 625
+    #assignment2.merge_chrs_into_one_vcf()
+    assignment2.get_total_number_of_variants_of_file() #42.190
     print("Done with assignment 2")
         
         
