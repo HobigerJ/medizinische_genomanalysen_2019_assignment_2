@@ -6,16 +6,14 @@ __author__ = 'XXX'
 
 
 class Assignment2:
-
-    with open("chr22.vcf") as my_vcf_fh:
-        vcf_reader = vcf.Reader(my_vcf_fh)    
+   
     
     def __init__(self):
         ## Check if pyvcf is installed
         print("PyVCF version: %s" % vcf.VERSION)
         
 
-    def get_average_quality_of_file(self, file):
+    def get_average_quality_of_file(self):
         '''
         Get the average PHRED quality of all variants
         :return:
@@ -24,10 +22,12 @@ class Assignment2:
         avg_quality = 0
         counter = 0
         GQ_sum = 0
-        for record in file:
-            call = record.genotype('HG001')
-            counter +=1
-            GQ_sum = GQ_sum + call.data[4]
+        with open("chr22.vcf") as my_vcf_fh:
+            vcf_reader = vcf.Reader(my_vcf_fh) 
+            for record in vcf_reader:
+                call = record.genotype('HG001')
+                counter +=1
+                GQ_sum = GQ_sum + call.data[4]
             #    print("counter: ", counter, "sum: ", GQ_sum)
         avg_quality = GQ_sum / counter
         print("Average quality ", avg_quality)
@@ -133,7 +133,7 @@ def main():
     assignment2.get_number_of_indels() # 6586
     assignment2.get_number_of_snvs() # 35 604
     assignment2.get_number_of_heterozygous_variants() # 0
-    assignment2.get_average_quality_of_file(assignment2.vcf_reader) # 625
+    assignment2.get_average_quality_of_file() # 625
     print("Done with assignment 2")
         
         
