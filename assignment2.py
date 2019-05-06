@@ -34,7 +34,7 @@ class Assignment2:
 
         quality = 0
         counter = 0
-        with open("chr22.vcf") as my_vcf_fh:
+        with open("chr22_new.vcf") as my_vcf_fh:
             vcf_reader = vcf.Reader(my_vcf_fh) 
             for record in vcf_reader:
                 quality = quality + record.QUAL
@@ -52,7 +52,7 @@ class Assignment2:
         :return: total number of variants
         '''
         counter = 0
-        with open("chr22.vcf") as my_vcf_fh:
+        with open("chr22_new.vcf") as my_vcf_fh:
             vcf_reader = vcf.Reader(my_vcf_fh) 
         
             for record in vcf_reader:
@@ -61,7 +61,7 @@ class Assignment2:
                     counter += 1
         print("nr of variants: ", counter)
 
-        # passt
+        # gerhard variante
     
     
     def get_variant_caller_of_vcf(self):
@@ -69,9 +69,18 @@ class Assignment2:
         Return the variant caller name
         :return: 
         '''
+        caller_set = set()
+        with open("chr22.vcf") as my_vcf_fh:
+            vcf_reader = vcf.Reader(my_vcf_fh)            
+            for record in vcf_reader:
+                info = record.INFO["callsetnames"]
+                for i in range(len(info)):
+                    caller_set.add(info[i])
+            print(caller_set)
+
+
         print("TODO")
-        
-        # Fragen. was/wo soll der stehen?
+
         
     def get_human_reference_version(self):
         '''
@@ -146,7 +155,7 @@ class Assignment2:
         '''
     
 
-        file = open("chr21.vcf") 
+        file = open("chr21_new.vcf") 
         w_f = open("newfile1.vcf", "w+") 
         for line in file: 
             
@@ -154,7 +163,7 @@ class Assignment2:
         file.close
         w_f.close
 
-        file = open("chr22.vcf") 
+        file = open("chr22_new.vcf") 
         w_f = open("newfile1.vcf", "a") 
         for line in file: 
             w_f.write(line)
@@ -176,8 +185,9 @@ def main():
     #assignment2.get_number_of_snvs() # 35 604
     #assignment2.get_number_of_heterozygous_variants() # 29.293
     #assignment2.get_average_quality_of_file() # 625
-    assignment2.merge_chrs_into_one_vcf()
+    #assignment2.merge_chrs_into_one_vcf()
     #assignment2.get_total_number_of_variants_of_file() #42.190
+    assignment2.get_variant_caller_of_vcf()
     print("Done with assignment 2")
         
         
