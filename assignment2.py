@@ -69,11 +69,11 @@ class Assignment2:
 
         with open("chr22_new.vcf") as my_vcf_fh:
             vcf_reader = vcf.Reader(my_vcf_fh)
-            print(vcf_reader.metadata)
-        
-        # Fragen
-        # gibt eigentlich die möglichkeit metadaten["fileDate"], aber referenz gibts nicht als keyword
-        # grep: gibt weder ein "genome" noch "reference" in dem file
+            for record in vcf_reader:
+                info = record.INFO["difficultregion"] # info ist eine Liste mit 1 eintrag
+                reference_version = info[0] # nehme den einen string-eintrag in eine neue variable
+                print(reference_version[0:4]) 
+                break
         
         
     def get_number_of_indels(self):
@@ -144,19 +144,17 @@ class Assignment2:
 
         print("New file with all variants of chr21 and chr22 was created in the current working directory.")
         
-        
+        # mit .writer kamen nur errors, die ich nicht beseitigen konnte
     
     def print_summary(self):
-        #self.get_average_quality_of_file() # 5
-        #self.get_total_number_of_variants_of_file() # 67784
-        #self.get_variant_caller_of_vcf() #  {'', 'SolidSE75GATKHC', '10XGATKhaplo', 'HiSeqPE300xfreebayes', 'HiSeqPE300xGATK', 'IonExomeTVC', 'CGnormal', 'SolidPE50x50GATKHC'}
+        self.get_average_quality_of_file() # 5
+        self.get_total_number_of_variants_of_file() # 67784
+        self.get_variant_caller_of_vcf() #  {'', 'SolidSE75GATKHC', '10XGATKhaplo', 'HiSeqPE300xfreebayes', 'HiSeqPE300xGATK', 'IonExomeTVC', 'CGnormal', 'SolidPE50x50GATKHC'}
         self.get_human_reference_version()         
-        #self.get_number_of_indels() # 12774
-        #self.get_number_of_snvs() # 55 010       
-        #self.get_number_of_heterozygous_variants() # 56 370      
-        #self.merge_chrs_into_one_vcf()      
-        
-        print("Print all results here")
+        self.get_number_of_indels() # 12774
+        self.get_number_of_snvs() # 55 010       
+        self.get_number_of_heterozygous_variants() # 56 370      
+        self.merge_chrs_into_one_vcf() # geht
     
     
 def main():
