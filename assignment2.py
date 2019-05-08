@@ -2,7 +2,7 @@
 
 import vcf
 
-__author__ = 'XXX'
+__author__ = 'Johanna Hobiger'
 
 
 class Assignment2:
@@ -71,7 +71,7 @@ class Assignment2:
             vcf_reader = vcf.Reader(my_vcf_fh)
             for record in vcf_reader:
                 info = record.INFO["difficultregion"] # info ist eine Liste mit 1 eintrag
-                reference_version = info[0] # nehme den einen string-eintrag in eine neue variable
+                reference_version = info[0] # nehme den einen string-eintrag in eine neue string-variable
                 print(reference_version[0:4]) 
                 break
         
