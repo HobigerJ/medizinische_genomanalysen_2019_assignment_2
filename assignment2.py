@@ -72,7 +72,7 @@ class Assignment2:
             for record in vcf_reader:
                 info = record.INFO["difficultregion"] # info ist eine Liste mit 1 eintrag
                 reference_version = info[0] # nehme den einen string-eintrag in eine neue string-variable
-                print(reference_version[0:4]) 
+                print("reference version: ", reference_version[0:4]) 
                 break
         
         
